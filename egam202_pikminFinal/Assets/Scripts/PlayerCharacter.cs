@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Timeline;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class PlayerCharacter : MonoBehaviour
     private pikmin PlayerChar; //Individual Pikmins
     private NavMeshAgent PlayerMove; //Individual Pikmin movement
 
-    public distanceMakrer marker;
+    public distanceMakrer disMarker;
 
     // Start is called before the first frame update
     void Start()
@@ -41,29 +42,33 @@ public class PlayerCharacter : MonoBehaviour
                 if (PlayerChar == null) //if the Player character is not selected,
                 {
                     PlayerChar = selectedPikmin; //it will select the pikmin
-                    PlayerMove = selectedPikmin.playerCharacter;
+                    PlayerMove = selectedPikmin.playerCharacter; //it will allow inidividual pikmin to move
 
-                    PlayerChar.activatedPikmin(true);
+
+                    PlayerChar.activatedPikmin(true); //indication
+
+
                 } 
                 
                 else if(PlayerChar != null) //if the Player character is already selected, but has been clicked
                 {
                     PlayerMove.SetDestination(hitinfo.point);
                     //It will make the selected pikmin to it move
+                    
+                    disMarker.activatedMarker(true);
+
+                    //GameObject letsgo = Instantiate(disMarker, disMarker.transform.position, Quaternion.identity);
+                    //Have to be in the same pattern with activating pikmin.
                 }
-                
-
-                
-
             }
-            //movement made here
         }
 
         if (Input.GetMouseButtonDown(1)) //When right-clicked, it will deactivate the Pikmin.
         {
-            PlayerChar.activatedPikmin(false);
-            PlayerChar = null;
+            PlayerChar.activatedPikmin(false); //deactivate pikmin
+            PlayerChar = null; //selection is emptied
 
+            disMarker.activatedMarker(false);
         }
 
 

@@ -5,46 +5,31 @@ using UnityEngine;
 public class distanceMakrer : MonoBehaviour
 {
 
-    public Camera myCamera;
-
-    Transform myPosition;
-
-    public bool move;
-
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Renderer>().enabled = false;
-        myPosition = gameObject.transform;
-        move = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 mouseposition = Input.mousePosition;
-        Ray worldRay = myCamera.ScreenPointToRay(mouseposition);
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            GetComponent<Renderer>().enabled = true;
-
-            if (Physics.Raycast(worldRay, out RaycastHit hitinfo))
-            {
-                myPosition.position = hitinfo.point;
-            }
-        }
+        //this.transform.position = hitinfo.point;
+         
 
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    public void activatedMarker(bool setDistance)
     {
-        if (other.gameObject.tag == "pikmin")
+        if (setDistance) 
         {
-            GetComponent<Renderer>().enabled = false;
+
+        }
+
+        else if(!setDistance)
+        {
+
+
         }
     }
-
-
 }
