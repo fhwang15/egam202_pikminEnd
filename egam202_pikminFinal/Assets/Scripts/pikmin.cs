@@ -7,9 +7,10 @@ public class pikmin : MonoBehaviour
 {
     public NavMeshAgent playerCharacter;
     GameObject marker;
-    Renderer renderer;
+    private Renderer myRend;
 
     Color active;
+    Color notActive;
 
 
     //What happens here?
@@ -29,9 +30,12 @@ public class pikmin : MonoBehaviour
     
     void Start()
     {
-        marker = GetComponentInChildren<GameObject>();
-        marker.SetActive(false);
-        active = Color.black;
+        myRend = this.GetComponent<Renderer>();
+        marker = this.transform.GetChild(0).gameObject; //getting the Marker
+        marker.SetActive(false); //Not seen when the pikmin is not selected.
+       
+        active = Color.black; //Color will change into black once selected
+        notActive = myRend.material.color;
     }
 
     // Update is called once per frame
@@ -47,14 +51,13 @@ public class pikmin : MonoBehaviour
         if (activated)
         {
             marker.SetActive(true);
-            this.renderer.material.color = active;
+            myRend.material.color = active;
         }
-        else
+        else if(!activated) 
         {
-            return;
+             marker.SetActive(false);
+             myRend.material.color=notActive;
         }
-
-        
     }
 
 
