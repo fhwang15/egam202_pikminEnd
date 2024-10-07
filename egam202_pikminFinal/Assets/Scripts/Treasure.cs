@@ -53,7 +53,6 @@ public class Treasure : MonoBehaviour
         else if (!activated)
         {
             marker.SetActive(false);
-
         }
     }
 

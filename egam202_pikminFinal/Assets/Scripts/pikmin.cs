@@ -114,7 +114,7 @@ public class pikmin : MonoBehaviour
         Destroy(madeDMarker);
     }
 
-    public void ActiveState()
+    void ActiveState()
     {
         playerCharacter.enabled = true; //Can move around
         marker.SetActive(true); //Marker On
@@ -133,17 +133,17 @@ public class pikmin : MonoBehaviour
     }
 
 
-    public void activatedMovement(Vector3 destination)
+    public void activatedMovement(Vector3 destination, bool treasure)
     {
+        isCreated = treasure;
         
         if (!isCreated)
         {
             madeDMarker = Instantiate(distanceMarker, destination, Quaternion.identity);
+            madeDMarker.transform.position = destination; //Setting the distance marker
             isCreated = true;
         
         }
-
-        madeDMarker.transform.position = destination; //Setting the distance marker
         playerCharacter.SetDestination(destination); //Also move the selected pikmin to the selected place
     }
 
@@ -159,21 +159,4 @@ public class pikmin : MonoBehaviour
         //will change later
 
     }
-
- //Once the Pikmin activation is true,
-    //public void activatedPikmin(bool activated)
-    //{
-    //    if (activated)
-    //    {
-    //        marker.SetActive(true);
-    //    }
-    //    else if(!activated) 
-    //    {
-    //        marker.SetActive(false);
-    //        Destroy(madeDMarker);
-    //    }
-
-    //    On = activated;
-    //}
-
 }
