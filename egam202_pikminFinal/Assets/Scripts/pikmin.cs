@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -6,17 +7,29 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 
-//Testing global enum ==> Works for now
-public enum PikminColors
+
+
+public enum PikminStates
 {
-    Red,
-    Yellow,
-    Blue,
+    Idle,
+    Active,
+    Carrying,
+    TryingToCarry
 }
 
 public class pikmin : MonoBehaviour
 {
- 
+
+    public PikminStates currentState;
+    //private PikminStates changedState;
+
+
+    public enum PikminColors
+    {
+        Red,
+        Yellow,
+        Blue,
+    }
 
     public PikminColors currentColors;
     private PikminColors lastColor;
@@ -25,15 +38,10 @@ public class pikmin : MonoBehaviour
     public NavMeshAgent playerCharacter;
     GameObject marker;
 
-
-
-
     //Distance Marker
     public GameObject distanceMarker;
     GameObject madeDMarker;
     bool isCreated;
-
-    private bool On;
 
     //Color Manager
     private Renderer myRend;
@@ -42,7 +50,7 @@ public class pikmin : MonoBehaviour
     
     void Start()
     {
-        myRend = this.GetComponent<Renderer>(); //Determines the activation color
+        // myRend = this.GetComponent<Renderer>(); //Determines the activation color
 
         marker = this.transform.GetChild(0).gameObject; //getting the Marker
         marker.SetActive(false); //Not seen when the pikmin is not selected.
@@ -57,6 +65,26 @@ public class pikmin : MonoBehaviour
         {
             ApplyColors();
         }
+
+       
+        switch (currentState)
+        {
+            case PikminStates.Idle:
+                IdleState();
+                break;
+            case PikminStates.Active:
+                ActiveState();
+                break;
+            case PikminStates.Carrying:
+                CarryingState();
+                break;
+            case PikminStates.TryingToCarry:
+                TryingToCarryState();
+                break;
+        
+            }
+
+        
     }
 
     void ApplyColors()
@@ -74,43 +102,47 @@ public class pikmin : MonoBehaviour
             case PikminColors.Blue:
                 myRend.material.color = Color.blue;
                 break;
-            case PikminColors.Black:
-                myRend.material.color = Color.black;
-                break;
         }
     }
 
-
-
-    //Once the Pikmin activation is true,
-    public void activatedPikmin(bool activated)
+    void IdleState()
     {
-        if (activated)
-        {
-            marker.SetActive(true);
-        }
-        else if(!activated) 
-        {
-            marker.SetActive(false);
-            Destroy(madeDMarker);
-        }
-
-        On = activated;
+        playerCharacter.enabled = false; //cannot move
+        marker.SetActive(false);
+        Destroy(madeDMarker);
     }
+
+    public void ActiveState()
+    {
+        playerCharacter.enabled = true; //Can move around
+        marker.SetActive(true); //Marker On
+
+       
+    }
+
+    void CarryingState()
+    {
+        playerCharacter.enabled = false; //cannot move, child of treasure.
+    }
+
+    void TryingToCarryState()
+    {
+        playerCharacter.enabled = false; //cannot move, child of treasure.
+    }
+
 
     public void activatedMovement(Vector3 destination)
     {
-        if (On)
+        
+        if (!isCreated)
         {
-            if (!isCreated)
-            {
-                madeDMarker = Instantiate(distanceMarker, destination, Quaternion.identity);
-                isCreated = true;
-            }
+            madeDMarker = Instantiate(distanceMarker, destination, Quaternion.identity);
+            isCreated = true;
+        
+        }
 
             madeDMarker.transform.position = destination; //Setting the distance marker
             playerCharacter.SetDestination(destination); //Also move the selected pikmin to the selected place
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -126,6 +158,20 @@ public class pikmin : MonoBehaviour
 
     }
 
+ //Once the Pikmin activation is true,
+    //public void activatedPikmin(bool activated)
+    //{
+    //    if (activated)
+    //    {
+    //        marker.SetActive(true);
+    //    }
+    //    else if(!activated) 
+    //    {
+    //        marker.SetActive(false);
+    //        Destroy(madeDMarker);
+    //    }
 
+    //    On = activated;
+    //}
 
 }

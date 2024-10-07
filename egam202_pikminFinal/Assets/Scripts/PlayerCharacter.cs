@@ -6,15 +6,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Timeline;
-
-//State of enum, making it global.
-public enum PikminStates
-{
-    Idle,
-    Active,
-    Carrying,
-    TryingToCarry
-}
+using static pikmin;
 
 
 public class PlayerCharacter : MonoBehaviour
@@ -23,17 +15,15 @@ public class PlayerCharacter : MonoBehaviour
     // ==> See if the pikmin has been selected or not.
     // It will allow pikmins to move around.
 
-
-    //State of the Pikmin
-
-    public PikminStates currentState;
-    private PikminStates changedState;
-
-    //
-
+  
     public Camera myCamera;
-
     private pikmin PlayerChar; //Individual Pikmins
+
+    private Treasure Treasure; //treasure
+
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,29 +48,45 @@ public class PlayerCharacter : MonoBehaviour
 
                 if (PlayerChar == null) //if the Player character is not selected,
                 {
+                    Treasure selectedTreasure = hitinfo.transform.GetComponent<Treasure>();
+                    //once hit the treasure, it will call the position of the treasure that has been selected.
+
                     PlayerChar = selectedPikmin; //it will select the pikmin
-                    PlayerChar.activatedPikmin(true); //indication
+                    Treasure = selectedTreasure;
+                    PlayerChar.currentState = PikminStates.Active;
 
 
-                } 
-                
-                else if(PlayerChar != null) //if the Player character is already selected, but has been clicked
+
+                    Treasure.activatedTreasure(true);
+                }
+
+                else if(PlayerChar != null)
                 {
                     PlayerChar.activatedMovement(hitinfo.point);
+                    
                 }
+                
+                //else if(PlayerChar != null) //if the Player character is already selected, but has been clicked
+                //{
+                //    PlayerChar.activatedMovement(hitinfo.point);
+
+                //}
+
+                
             }
 
+           
+
         }
+
 
         if (Input.GetMouseButtonDown(1)) //When right-clicked, it will deactivate the Pikmin.
         {
-            PlayerChar.activatedPikmin(false); //deactivate pikmin
+            PlayerChar.currentState = PikminStates.Idle;
             PlayerChar = null; //selection is emptied
+
 
         }
     }
-
-    
-
 
 }
