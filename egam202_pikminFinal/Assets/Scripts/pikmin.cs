@@ -125,6 +125,8 @@ public class pikmin : MonoBehaviour
     void CarryingState()
     {
         playerCharacter.enabled = false; //cannot move, child of treasure.
+
+
     }
 
     void TryingToCarryState()

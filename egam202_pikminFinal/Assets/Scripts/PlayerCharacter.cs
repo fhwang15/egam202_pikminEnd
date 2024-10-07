@@ -5,6 +5,8 @@ using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.AI.Navigation;
+
 using UnityEngine.Timeline;
 using static pikmin;
 
@@ -19,7 +21,7 @@ public class PlayerCharacter : MonoBehaviour
     public Camera myCamera;
     private pikmin PlayerChar; //Individual Pikmins
 
-    private Treasure Treasure; //treasure
+    private Treasure CurrentTreasure; //treasure
 
     bool pselected;
 
@@ -57,18 +59,19 @@ public class PlayerCharacter : MonoBehaviour
                     if (PlayerChar.currentState == PikminStates.Idle)
                     {
                         PlayerChar.currentState = PikminStates.Active;
-                    }
+                    } 
+                   
 
                     pselected = true;
                 }
 
                 else if (pselected && selectedTreasure != null)
                 {
-                    Treasure = selectedTreasure;
+                    CurrentTreasure = selectedTreasure;
 
                     
-                    Treasure.activatedTreasure(true);
-                    PlayerChar.activatedMovement(Treasure.transform.position, true);
+                    CurrentTreasure.activatedTreasure(true);
+                    PlayerChar.activatedMovement(CurrentTreasure.transform.position, true);
                 }
 
                 else if(pselected) //if its not a treasure+pikmin yet you have to move around :)
@@ -77,6 +80,7 @@ public class PlayerCharacter : MonoBehaviour
                     {
 
                         PlayerChar.activatedMovement(hitinfo.point, false);
+                        
                     }
                 }
             }
@@ -86,16 +90,59 @@ public class PlayerCharacter : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1)) //When right-clicked, it will deactivate the Pikmin.
         {
-            Treasure.activatedTreasure(false);
+
+            CurrentTreasure.activatedTreasure(false);
+
             PlayerChar.currentState = PikminStates.Idle;
             PlayerChar = null; //selection is emptied
             pselected = false;
-            Treasure = null;
+            CurrentTreasure = null;
 
 
         }
     }
-           
+
+    // what i need for the future:
+    // 1. number of required minions attached to the Treasure
+    // 2. number of minions currently attached
+    // 3. what else
+
+    void workingPikmins()
+    {
+        CurrentTreasure.pikminInserted++;
+
+        PlayerChar.currentState = PikminStates.TryingToCarry;
+        PlayerChar.transform.SetParent(CurrentTreasure.transform);
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (PlayerChar != null)
+        {
+            if(collision.gameObject.tag == "treasure")
+            {
+
+                workingPikmins();
+
+                for (int i = 0; i < CurrentTreasure.pikminRequired; i++)
+                {
+                    if (CurrentTreasure.requiredPikmin[i] == null)
+                    {
+                        CurrentTreasure.requiredPikmin[i] = PlayerChar;
+                    } 
+                    
+                    else if (CurrentTreasure.requiredPikmin[i] != null)
+                    {
+                        return;
+                    }
+
+                }
+
+              
+            }
+        }
+    }
 
 }
 
