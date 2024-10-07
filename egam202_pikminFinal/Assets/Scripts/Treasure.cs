@@ -43,6 +43,8 @@ public class Treasure : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        treasureCarried.enabled = false;
+
         isDone = false;
 
         pikminInserted = 0;

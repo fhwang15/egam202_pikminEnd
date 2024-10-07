@@ -68,10 +68,9 @@ public class PlayerCharacter : MonoBehaviour
                 else if (pselected && selectedTreasure != null)
                 {
                     CurrentTreasure = selectedTreasure;
-
-                    
                     CurrentTreasure.activatedTreasure(true);
-                    PlayerChar.activatedMovement(CurrentTreasure.transform.position, true);
+
+                    PlayerChar.activatedMovement(CurrentTreasure.transform.position);
                 }
 
                 else if(pselected) //if its not a treasure+pikmin yet you have to move around :)
@@ -79,7 +78,7 @@ public class PlayerCharacter : MonoBehaviour
                     if (PlayerChar.currentState == PikminStates.Active)
                     {
 
-                        PlayerChar.activatedMovement(hitinfo.point, false);
+                        PlayerChar.activatedMovement(hitinfo.point);
                         
                     }
                 }
@@ -91,11 +90,12 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) //When right-clicked, it will deactivate the Pikmin.
         {
 
-            CurrentTreasure.activatedTreasure(false);
+            //CurrentTreasure.activatedTreasure(false);
 
             PlayerChar.currentState = PikminStates.Idle;
             PlayerChar = null; //selection is emptied
             pselected = false;
+
             CurrentTreasure = null;
 
 
@@ -122,6 +122,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             if(collision.gameObject.tag == "treasure")
             {
+                CurrentTreasure.activatedTreasure(false);
 
                 workingPikmins();
 
@@ -141,6 +142,8 @@ public class PlayerCharacter : MonoBehaviour
 
               
             }
+
+            PlayerChar = null;
         }
     }
 

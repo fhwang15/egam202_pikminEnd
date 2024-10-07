@@ -135,17 +135,15 @@ public class pikmin : MonoBehaviour
     }
 
 
-    public void activatedMovement(Vector3 destination, bool treasure)
+    public void activatedMovement(Vector3 destination)
     {
-        isCreated = treasure;
         
         if (!isCreated)
         {
             madeDMarker = Instantiate(distanceMarker, destination, Quaternion.identity);
-            madeDMarker.transform.position = destination; //Setting the distance marker
             isCreated = true;
-        
         }
+        madeDMarker.transform.position = destination; //Setting the distance marker
         playerCharacter.SetDestination(destination); //Also move the selected pikmin to the selected place
     }
 
