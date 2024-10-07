@@ -50,7 +50,7 @@ public class pikmin : MonoBehaviour
     
     void Start()
     {
-        // myRend = this.GetComponent<Renderer>(); //Determines the activation color
+        myRend = this.GetComponent<Renderer>(); //Determines the color
 
         marker = this.transform.GetChild(0).gameObject; //getting the Marker
         marker.SetActive(false); //Not seen when the pikmin is not selected.
@@ -109,6 +109,8 @@ public class pikmin : MonoBehaviour
     {
         playerCharacter.enabled = false; //cannot move
         marker.SetActive(false);
+
+        isCreated = false;
         Destroy(madeDMarker);
     }
 
@@ -141,8 +143,8 @@ public class pikmin : MonoBehaviour
         
         }
 
-            madeDMarker.transform.position = destination; //Setting the distance marker
-            playerCharacter.SetDestination(destination); //Also move the selected pikmin to the selected place
+        madeDMarker.transform.position = destination; //Setting the distance marker
+        playerCharacter.SetDestination(destination); //Also move the selected pikmin to the selected place
     }
 
     private void OnCollisionEnter(Collision collision)
