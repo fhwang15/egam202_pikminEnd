@@ -70,7 +70,7 @@ public class Treasure : MonoBehaviour
 
             if (Physics.Raycast(worldRay, out RaycastHit hitinfo))
             {
-                treasureCarried.SetDestination(hitinfo.point);
+                //treasureCarried.SetDestination(hitinfo.point);
             }
         }
 

@@ -52,34 +52,33 @@ public class PlayerCharacter : MonoBehaviour
                 Treasure selectedTreasure = hitinfo.transform.GetComponent<Treasure>();
                 //once hit the treasure, it will call the position of the treasure that has been selected.
 
+
                 if (selectedPikmin != null && PlayerChar == null)
                 {
                     PlayerChar = selectedPikmin; //it will select the pikmin
 
                     if (PlayerChar.currentState == PikminStates.Idle)
                     {
-                        PlayerChar.currentState = PikminStates.Active;
+                        PlayerChar.currentState = PikminStates.Active;                    
+                        pselected = true; //will say that pikmin has been selected.
                     } 
-                   
-
-                    pselected = true;
                 }
 
-                else if (pselected && selectedTreasure != null)
+
+                else if (selectedTreasure != null && pselected)
                 {
                     CurrentTreasure = selectedTreasure;
                     CurrentTreasure.activatedTreasure(true);
 
-                    PlayerChar.activatedMovement(CurrentTreasure.transform.position);
+                    PlayerChar.activatedToTreasure(CurrentTreasure.transform.position);
+
                 }
 
                 else if(pselected) //if its not a treasure+pikmin yet you have to move around :)
                 {
                     if (PlayerChar.currentState == PikminStates.Active)
                     {
-
                         PlayerChar.activatedMovement(hitinfo.point);
-                        
                     }
                 }
             }
@@ -90,41 +89,60 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) //When right-clicked, it will deactivate the Pikmin.
         {
 
-            //CurrentTreasure.activatedTreasure(false);
+            Vector2 mouseposition = Input.mousePosition;
+            Ray worldRay = Camera.main.ScreenPointToRay(mouseposition);
 
-            PlayerChar.currentState = PikminStates.Idle;
-            PlayerChar = null; //selection is emptied
-            pselected = false;
+            if (Physics.Raycast(worldRay, out RaycastHit hitinfo))
+            {
+                //CurrentTreasure.activatedTreasure(false);
+                
+                //Treasure selectedTreasure = hitinfo.transform.GetComponent<Treasure>();
+                //once hit the treasure, it will call the position of the treasure that has been selected.
 
-            CurrentTreasure = null;
+                //if (selectedTreasure != null)
+                //{
+                //    PlayerChar.currentState = PikminStates.Idle;
+                //    CurrentTreasure = null;
+                //} 
 
 
+                if (PlayerChar != null)
+                {
+                    PlayerChar.currentState = PikminStates.Idle;
+                    PlayerChar = null; //selection is emptied
+                    pselected = false;
+                }
+                else if (PlayerChar == null)
+                {
+                    return;
+                }
+
+                CurrentTreasure = null;
+
+            }
         }
     }
 
-    // what i need for the future:
-    // 1. number of required minions attached to the Treasure
-    // 2. number of minions currently attached
-    // 3. what else
-
-    void workingPikmins()
-    {
-        CurrentTreasure.pikminInserted++;
-
-        PlayerChar.currentState = PikminStates.TryingToCarry;
-        PlayerChar.transform.SetParent(CurrentTreasure.transform);
-    }
-
-
     private void OnCollisionEnter(Collision collision)
     {
-        if (PlayerChar != null)
-        {
-            if(collision.gameObject.tag == "treasure")
-            {
-                CurrentTreasure.activatedTreasure(false);
+        if (collision.gameObject.CompareTag("treasure"))
+         {
 
-                workingPikmins();
+            if (PlayerChar == null)
+            {
+                Debug.Log("You null with PC");
+            } else if (CurrentTreasure == null)
+            {
+                Debug.Log("You null with Treasure");
+
+            }
+
+            //PlayerChar.transform.SetParent(CurrentTreasure.transform);
+
+                CurrentTreasure.activatedTreasure(false);
+                //CurrentTreasure.pikminInserted++;
+
+                
 
                 for (int i = 0; i < CurrentTreasure.pikminRequired; i++)
                 {
@@ -141,10 +159,11 @@ public class PlayerCharacter : MonoBehaviour
                 }
 
               
-            }
+         }
 
+            pselected = false;
             PlayerChar = null;
-        }
+        
     }
 
 }

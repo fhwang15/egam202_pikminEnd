@@ -118,34 +118,32 @@ public class pikmin : MonoBehaviour
     {
         playerCharacter.enabled = true; //Can move around
         marker.SetActive(true); //Marker On
-
-       
     }
 
     void CarryingState()
     {
         playerCharacter.enabled = false; //cannot move, child of treasure.
-
+        marker.SetActive(false);
 
     }
 
     void TryingToCarryState()
     {
         playerCharacter.enabled = false; //cannot move, child of treasure.
+        marker.SetActive(false);
     }
 
 
     public void activatedMovement(Vector3 destination)
     {
-        
-        if (!isCreated)
-        {
-            madeDMarker = Instantiate(distanceMarker, destination, Quaternion.identity);
-            isCreated = true;
-        }
-        madeDMarker.transform.position = destination; //Setting the distance marker
-        playerCharacter.SetDestination(destination); //Also move the selected pikmin to the selected place
+        playerCharacter.SetDestination(destination);
     }
+
+    public void activatedToTreasure(Vector3 destination)
+    {
+        playerCharacter.SetDestination(destination);
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -154,6 +152,10 @@ public class pikmin : MonoBehaviour
         {
             Destroy(madeDMarker);
             isCreated = false;
+        } 
+        else if (collision.gameObject.tag == "treasure")
+        {
+            currentState = PikminStates.TryingToCarry;
         }
 
         //will change later
