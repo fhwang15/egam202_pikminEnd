@@ -7,19 +7,33 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Timeline;
 
+//State of enum, making it global.
+public enum PikminStates
+{
+    Idle,
+    Active,
+    Carrying,
+    TryingToCarry
+}
+
+
 public class PlayerCharacter : MonoBehaviour
 {
-
     // What happens here?
     // ==> See if the pikmin has been selected or not.
     // It will allow pikmins to move around.
 
+
+    //State of the Pikmin
+
+    public PikminStates currentState;
+    private PikminStates changedState;
+
+    //
+
     public Camera myCamera;
 
     private pikmin PlayerChar; //Individual Pikmins
-    private NavMeshAgent PlayerMove; //Individual Pikmin movement
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +78,9 @@ public class PlayerCharacter : MonoBehaviour
             PlayerChar = null; //selection is emptied
 
         }
-
-
     }
+
+    
+
+
 }

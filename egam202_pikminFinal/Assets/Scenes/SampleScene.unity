@@ -506,6 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feae6e828911c4c419f1912639ba6e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentColors: 2
   playerCharacter: {fileID: 687220359}
   distanceMarker: {fileID: 2441768655777371228, guid: 8d9a63e0398bef444a4a11f0ee9f6cd0, type: 3}
 --- !u!195 &687220359
@@ -644,7 +645,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!1 &705507993
 GameObject:
@@ -788,6 +789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feae6e828911c4c419f1912639ba6e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentColors: 1
   playerCharacter: {fileID: 813086785}
   distanceMarker: {fileID: 2441768655777371228, guid: 8d9a63e0398bef444a4a11f0ee9f6cd0, type: 3}
 --- !u!195 &813086785
@@ -926,7 +928,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!1 &890391625
 GameObject:
@@ -1274,6 +1276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feae6e828911c4c419f1912639ba6e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentColors: 0
   playerCharacter: {fileID: 1603847562}
   distanceMarker: {fileID: 2441768655777371228, guid: 8d9a63e0398bef444a4a11f0ee9f6cd0, type: 3}
 --- !u!114 &1603847568
@@ -1314,7 +1317,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!1 &1733757729
 GameObject:
