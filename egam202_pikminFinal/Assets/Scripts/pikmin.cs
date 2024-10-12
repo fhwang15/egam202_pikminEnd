@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -107,7 +106,7 @@ public class pikmin : MonoBehaviour
 
     void IdleState()
     {
-        playerCharacter.enabled = false; //cannot move
+        playerCharacter.isStopped = true; //cannot move
         marker.SetActive(false);
 
         isCreated = false;
@@ -116,7 +115,7 @@ public class pikmin : MonoBehaviour
 
     void ActiveState()
     {
-        playerCharacter.enabled = true; //Can move around
+        playerCharacter.isStopped = false; //Can move around
         marker.SetActive(true); //Marker On
     }
 

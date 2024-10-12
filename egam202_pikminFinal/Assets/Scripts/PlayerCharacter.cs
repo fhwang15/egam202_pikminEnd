@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
@@ -30,8 +29,12 @@ public class PlayerCharacter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerChar = null;
+        PlayerChar = GetComponent<pikmin>();
+
         pselected = false;
+
+        
+
     }
 
     // Update is called once per frame
@@ -53,9 +56,9 @@ public class PlayerCharacter : MonoBehaviour
                 //once hit the treasure, it will call the position of the treasure that has been selected.
 
 
-                if (selectedPikmin != null && PlayerChar == null)
+                if (selectedPikmin != null && selectedPikmin == PlayerChar)
                 {
-                    PlayerChar = selectedPikmin; //it will select the pikmin
+                    //PlayerChar = selectedPikmin; //it will select the pikmin
 
                     if (PlayerChar.currentState == PikminStates.Idle)
                     {
@@ -67,11 +70,13 @@ public class PlayerCharacter : MonoBehaviour
 
                 else if (selectedTreasure != null && pselected)
                 {
+
+                    
                     CurrentTreasure = selectedTreasure;
-                    CurrentTreasure.activatedTreasure(true);
+                    CurrentTreasure.activatedTreasure(true); 
 
                     PlayerChar.activatedToTreasure(CurrentTreasure.transform.position);
-
+                    Debug.Log("pickup treasure" + CurrentTreasure);
                 }
 
                 else if(pselected) //if its not a treasure+pikmin yet you have to move around :)
@@ -162,7 +167,7 @@ public class PlayerCharacter : MonoBehaviour
          }
 
             pselected = false;
-            PlayerChar = null;
+            //PlayerChar = null;
         
     }
 
